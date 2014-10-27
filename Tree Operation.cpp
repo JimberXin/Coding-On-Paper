@@ -1,5 +1,7 @@
 //Author:  Xin Junbo
 //Date:    2014/09/02
+//Modify: 2014/10/27
+//Add: findPreNext function 
 
 #include<iostream>
 #include<vector>
@@ -221,6 +223,42 @@ bool findBST(TreeNode* root, int key){
 	}
 	  return false;
 }
+
+//***************Populating the tree with next pointers*************************
+struct TreeLinkNode{
+	   int value;
+	   TreeLinkNode* left;
+	   TreeLinkNode* right;
+	   TreeLinkNode* next;
+};
+
+//****************find the previous and next node of given key*************
+void findPreNext(TreeNode* root, int key, TreeNode* &pre, TreeNode* & next){
+	      if(root == NULL) return;
+		  if(root -> val > key){  // go to left
+			   next = root;
+			   findPreNext(root->left, key, pre, next);
+		  }else if(root -> val < key){  // go to right
+			   pre = root;
+			   findPreNext(root -> right, key, pre, next);
+		  }else{
+			  //find pre
+				if( root -> left != NULL){
+					  TreeNode* p = root -> left;
+					  while( p -> right != NULL)
+						  p = p -> right;
+					  pre = p;
+				}
+				//find next
+				if(root -> right != NULL){
+					TreeNode* p = root -> right;
+					while( p -> left != NULL)
+						p = p  -> left;
+					next = p;
+				}
+		  }
+}
+
 //********insert the given value Node in the tree*****Iteration & Non-Iteration*********
 bool insertBST_Iteration(TreeNode* root, int key){
 	   if(root == NULL){
