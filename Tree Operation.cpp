@@ -1,7 +1,7 @@
 //Author:  Xin Junbo
 //Date:    2014/09/02
-//Modify: 2014/10/27
-//Add: findPreNext function 
+//*********  Modify: 2014/10/27**********
+//*******Add:    findPreNex \ maxDist*******
 
 #include<iostream>
 #include<vector>
@@ -257,6 +257,37 @@ void findPreNext(TreeNode* root, int key, TreeNode* &pre, TreeNode* & next){
 					next = p;
 				}
 		  }
+}
+
+
+//****get the max distance of the tree, distance is the node number between node1 to node2****
+//for example:
+// *     1
+// *    / \
+//*   2   3
+//*          \
+//*           4
+//*   max Distance between 2 and 4 is 4
+struct numNode{
+	int depth;
+	int maxDist;
+	numNode(int depth = 0, int Dist = 0): depth(depth), maxDist(Dist){}  //constructor
+};
+
+numNode maxDistHelper(TreeNode* root){
+	numNode result;
+	if(root == NULL) return result;
+	numNode left = maxDistHelper(root -> left);
+	numNode right = maxDistHelper(root -> right);
+	result.depth = max(left.depth, right.depth) + 1;  // update depth
+
+	int cross = left.depth + right.depth + 1;
+	result.maxDist = max(cross, max(left.maxDist, right.maxDist ));  // update maxDist
+	return result;
+}
+
+int maxDist(TreeNode* root){
+	return maxDistHelper(root).maxDist;
 }
 
 //********insert the given value Node in the tree*****Iteration & Non-Iteration*********
