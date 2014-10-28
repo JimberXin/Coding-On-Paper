@@ -1,5 +1,9 @@
+//Author: Xin Junbo
+//Last Modify:  2014/10/28
+
 #include<iostream>
 #include<string>
+#include<stack>
 #include<vector>
 using namespace std;
 
@@ -82,6 +86,7 @@ int partion(int A[], int start, int end){
 	  return i;
 }
 
+//quich_sort using recursion method
 void quick_sort(int A[], int left, int right){
 	if(NULL == A) return;
 	if(left < right){
@@ -89,6 +94,38 @@ void quick_sort(int A[], int left, int right){
 		quick_sort(A,left,index-1);
 		quick_sort(A,index+1,right);
 	}
+}
+
+//quich_sort using non-recursion method, using stack
+void quick_sort_stack(int A[], int left, int right){
+	  stack<int> Stk;
+	  int pivot;
+	  if(left < right){
+		  pivot = partition(A,left, right);
+		  if(pivot - 1 > left){
+			  Stk.push(left);
+			  Stk.push(pivot -1);
+		  }
+		  if(pivot +1 < right){
+			  Stk.push(pivot+1);
+			  Stk.push(right);
+		  }
+		  while( !Stk.empty()){
+			  int high = Stk.top();
+			  Stk.pop();
+			  int low = Stk.top();
+			  Stk.pop();
+			  pivot  = partition(A, low, high);  // find the index 
+			  if(pivot - 1 >  low){
+				  Stk.push(low);
+				  Stk.push(pivot -1);
+			  }
+			  if(pivot + 1 < high){
+				  Stk.push(pivot+1);
+				  Stk.push(high);
+			  }
+		  }//end while
+	  }
 }
 
 int  find_kth_smallest(int A[], int start, int end, int k){
