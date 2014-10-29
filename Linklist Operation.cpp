@@ -1,3 +1,7 @@
+//Author:   Xin Junbo
+//Date:  2014/10/28
+//Modify:  fix some bugs on 1) hasCycle  2)merge_lists, 3)CycleBegin 
+//add:  1)MergeSort
 #include<iostream>
 using namespace std;
 
@@ -57,8 +61,8 @@ void Delete_Node_GivienKey(Linklist* head, int key)
 
 //***************Delete the node by given the Node*****************
 void Delete_Node_GivenNode(Linklist * head, Linklist* pToBeDeleted){
-	 if(NULL == head || NULL == pToBeDeleted) return;
-	 if(NULL != pToBeDeleted -> next){
+	 if(head == NULL || pToBeDeleted == NULL) return;
+	 if( pToBeDeleted -> next != NULL){
 		 //not the tail of the Linklist, delete it in O(1) time complexity
 		    Linklist* nex = pToBeDeleted -> next;
 			pToBeDeleted -> val = nex -> val;
@@ -113,7 +117,7 @@ void Delete_Node_GivenNode(Linklist * head, Linklist* pToBeDeleted){
 	 if(head == NULL || head -> next == NULL) return false;
 	 Linklist* slow = head;
 	 Linklist* fast = head;
-	 while(fast != NULL){
+	 while(fast != NULL && fast -> next != NULL){
 		 slow = slow -> next;
 		 fast = fast -> next -> next;;
 		 if(slow == fast) return true;
@@ -125,7 +129,7 @@ void Delete_Node_GivenNode(Linklist * head, Linklist* pToBeDeleted){
  Linklist* CycleBegin(Linklist* head){
 	 if(head == NULL || head -> next == NULL) return NULL;
 	 Linklist* slow, *fast;
-	 while(fast != NULL && fast != slow){
+	 while(fast != NULL && fast -> next != NULL && fast != slow){
 		 slow = slow -> next;
 		 fast = fast -> next -> next;
 		 if(slow == fast) break;
@@ -153,8 +157,8 @@ void Delete_Node_GivenNode(Linklist * head, Linklist* pToBeDeleted){
 		    }
 		   cur = cur -> next;
 	   }
-	   while(L1 != NULL) cur -> next = L1;
-	   while(L2 != NULL) cur -> next = L2;
+	   if(L1 != NULL) cur -> next = L1;
+	   if(L2 != NULL) cur -> next = L2;
 	   return dummy -> next;
  }
  
@@ -171,6 +175,44 @@ Linklist* findKthNode(Linklist* head, int k){
 			 slow = slow -> next;
 	 }
 	 return slow;
+}
+
+//**************Linklist sort using mergeSort alogrithm**************
+Linklist* merge(Linklist* head1, Linklist* head2){
+	 Linklist* dummy = (Linklist*)malloc(sizeof(Linklist));
+	 Linklist* p = dummy;
+	 if(head1 == NULL) return head2;
+	 if(head2 == NULL) return head1;
+	 while(head1 != NULL && head2 != NULL){
+		  if(head1 -> val < head2 -> val){
+			  p -> next = head1;
+			  head1 = head1 -> next;
+	        }else{
+			   p -> next = head2;
+			   head2 = head2 -> next;
+		  }
+		  p = p -> next;
+	 }
+	 if(head1 != NULL) p -> next = head1;
+	 if(head2 != NULL) p -> next = head2;
+	 return dummy -> next;
+}
+
+Linklist* mergeListSort(Linklist* head){
+	if(head == NULL || head -> next == NULL)
+		return head;
+	Linklist* slow = head;
+	Linklist* fast = head -> next;
+	while(fast != NULL && fast -> next != NULL){
+		slow =  slow -> next;
+		fast    = fast   -> next -> next;
+	}
+	Linklist *first = head;
+	Linklist *second = slow -> next;
+	slow -> next = NULL;
+
+	Linklist* newhead = merge(mergeListSort(first), mergeListSort(second));
+	return newhead;
 }
 
 	  
