@@ -42,14 +42,14 @@ vector<int> inOrder(TreeNode* root){
 	   stack<TreeNode*> nodeStack;
 	   TreeNode* p = root;
 	   while(p != NULL && ! nodeStack.empty() ){
-		     while(p != NULL){
-				 nodeStack.push(p);
-				 p = p -> left;
-			 }
-			 p = nodeStack.top();
-			 result.push_back(p -> val);
-			 nodeStack.pop();
-			 p = p -> right;
+		while(p != NULL){
+		  nodeStack.push(p);
+		  p = p -> left;
+		}
+		p = nodeStack.top();
+		result.push_back(p -> val);
+		nodeStack.pop();
+		p = p -> right;
 	   }
 	   return result;
 }
@@ -61,20 +61,20 @@ vector<int> postOrder(TreeNode* root){
 	 TreeNode* last = NULL;
 	 TreeNode* p = root;
 	 while(p !=NULL && !nodeStack.empty()){
-		   while(p != NULL){
-			   nodeStack.push(p);
-			   p = p -> left;
-	   }
-		   p = nodeStack.top();
+		while(p != NULL){
+		 nodeStack.push(p);
+		 p = p -> left;
+	        }
+		  p = nodeStack.top();
 	//if the current node 'p' has no right child, or has already visited, visit p
-		   if(p -> right == NULL || p -> right == last){
-			       last = root;
-				   result.push_back(p -> val);
-				   nodeStack.pop();
-				   p = NULL;
-		   }else
-			   p = p -> right;
-  }
+		if(p -> right == NULL || p -> right == last){
+		  last = root;
+		  result.push_back(p -> val);
+		  nodeStack.pop();
+		  p = NULL;
+		}else
+	          p = p -> right;
+        }
 	   return result;
 }
 
