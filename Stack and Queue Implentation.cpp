@@ -438,7 +438,7 @@ int main(void)
 	//test of class CircularQueue
 	CircularQueue<int> cq(9);
 	for(int i =0; i < sizeof(A)/sizeof(int); ++i)
-		cq.pushCQ(A[i]);
+	   cq.pushCQ(A[i]);
 	cout << cq.getLenCQ() << endl;
 	cq.popCQ();
 	cq.popCQ();
@@ -501,7 +501,7 @@ int main(void)
 	//test o class QueueToStack
 	QueueToStack<int> qTos;
 	for(int i = 0; i < sizeof(A)/sizeof(int); ++i)
-		qTos.pushQS(A[i]);
+	  qTos.pushQS(A[i]);
 	cout << qTos.getLenQS() << endl;
 	qTos.popQS();
 	qTos.popQS();

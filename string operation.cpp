@@ -115,8 +115,8 @@ string str_preprocess(string str){
 	   return result;      
 }
     //Using Manacher Algorithm
-        //  ^ # b # a #  b # c # b # a  # b # c #  b # a # c  # c # b # a # $
-		//P: 0 1 0 3 0 1 0 7 0 1 0 9 0 1 0 5 0 1 0 1 0 1 2 1 0 1 0 1 0
+   //  ^ # b # a #  b # c # b # a  # b # c #  b # a # c  # c # b # a # $
+    //P: 0 1 0 3 0 1 0 7 0 1 0 9 0 1 0 5 0 1 0 1 0 1 2 1 0 1 0 1 0
 int longest_palindrome_better(string str){
         string newStr = str_preprocess(str);
 		size_t n = newStr.length();
