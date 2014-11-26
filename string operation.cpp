@@ -119,26 +119,27 @@ string str_preprocess(string str){
     //P: 0 1 0 3 0 1 0 7 0 1 0 9 0 1 0 5 0 1 0 1 0 1 2 1 0 1 0 1 0
 int longest_palindrome_better(string str){
         string newStr = str_preprocess(str);
-		size_t n = newStr.length();
-		int* P = new int[n];
-		int center = 0;
-		int right = 1;
-		int maxLen = 0;
-		for(int i = 1; i < n-1; ++i){
-			  int i_mirror = 2*center - i;
-			  if(right > i)
-				  P[i] = min(right-i, P[i_mirror]);
-			  else
-				  P[i] = 0;
-			  while(newStr[i+P[i]+1] == newStr[i-1-P[i]])  //continues to expand, i is the current center
-				  P[i]++;
-			  if(i+P[i] > right){
-				  right = i + P[i];
-				  center = i;
-			  }
-			  maxLen = max(maxLen, P[i]);
-		}
-		return maxLen;
+	size_t n = newStr.length();
+	int* P = new int[n];
+	int center = 0;
+	int right = 1;
+	int maxLen = 0;
+	for(int i = 1; i < n-1; ++i){
+	  int i_mirror = 2*center - i;
+	  if(right > i)
+	    P[i] = min(right-i, P[i_mirror]);
+	  else
+	    P[i] = 0;
+	  //continues to expand, i is the current center
+	  while(newStr[i+P[i]+1] == newStr[i-1-P[i]])  
+	    P[i]++;
+	  if(i+P[i] > right){
+	    right = i + P[i];
+	    center = i;
+	  }
+	  maxLen = max(maxLen, P[i]);
+	}
+	return maxLen;
 }
 
 //**************Implentation of string operation***************
@@ -162,48 +163,48 @@ private:
 inline Mystring::Mystring(const char* str){
 	if(!str) m_data = 0;
 	else{
-		m_data = new char[strlen(str)+1];
-		strcpy(m_data, str);
+	  m_data = new char[strlen(str)+1];
+	  strcpy(m_data, str);
 	}
 }
-//copy constructor       拷贝构造函数
+//copy constructor      
 inline Mystring::Mystring(const Mystring& other){
 	if(!other.m_data) m_data = 0;
 	else{
-		m_data = new char[strlen(other.m_data)+1];
-		strcpy(m_data, other.m_data);
+	  m_data = new char[strlen(other.m_data)+1];
+	  strcpy(m_data, other.m_data);
 	}
 }
-//operater =        赋值运算重载
+//operater =        
 inline Mystring& Mystring::operator=(const Mystring& other){
 	if(this != &other){
-		delete m_data;
-		if(!other.m_data) m_data = 0;
-		else{
-			m_data = new char[strlen(other.m_data)+1];
-			strcpy(m_data, other.m_data);
-		}
+	  delete m_data;
+	  if(!other.m_data) m_data = 0;
+	  else{
+	    m_data = new char[strlen(other.m_data)+1];
+	    strcpy(m_data, other.m_data);
+	  }
 	}
 	return *this;
 }
-//operator +      +号运算重载
+//operator +      
 inline Mystring Mystring::operator+(const Mystring& other) const{
-	   Mystring newstr;
-	   if(!other.m_data)
-		   newstr = *this;
-	   else if(!m_data)
-		   newstr = other;
-	   else{
-		   newstr.m_data = new char[strlen(m_data)+strlen(other.m_data)+1];
-		   strcpy(newstr.m_data, m_data);
-		   strcat(newstr.m_data, other.m_data);
-	   }
-	   return newstr;
+  Mystring newstr;
+  if(!other.m_data)
+    newstr = *this;
+  else if(!m_data)
+    newstr = other;
+  else{
+    newstr.m_data = new char[strlen(m_data)+strlen(other.m_data)+1];
+    strcpy(newstr.m_data, m_data);
+    strcat(newstr.m_data, other.m_data);
+  }
+  return newstr;
 }
 //operator ==      ==运算重载
 inline bool Mystring::operator==(const Mystring& other){
-	  if(strlen(other.m_data ) != strlen(m_data)) return false;
-	  return strcmp(m_data, other.m_data)? false: true;
+  if(strlen(other.m_data ) != strlen(m_data)) return false;
+  return strcmp(m_data, other.m_data)? false: true;
 }
 
 //operator <<     << 友元重载
@@ -215,16 +216,16 @@ ostream& operator<<(ostream& os, Mystring& str){
 
 
 int main(void){
-	string str = "babcbabcbaccba1";
-	int maxLen = longest_palindrome_better(str);
-	cout << maxLen << endl;
+  string str = "babcbabcbaccba1";
+  int maxLen = longest_palindrome_better(str);
+  cout << maxLen << endl;
 
-	char* str2 = "babcbabcb";
-	int maxLen2 =  longest_palindrome(str2);
-	cout << maxLen2 << endl;
+  char* str2 = "babcbabcb";
+  int maxLen2 =  longest_palindrome(str2);
+  cout << maxLen2 << endl;
 
-	Mystring mystr = "hello";
-	Mystring mystr2 = mystr + "world";
-	getchar();
-	return 0;
+  Mystring mystr = "hello";
+  Mystring mystr2 = mystr + "world";
+  getchar();
+  return 0;
 }
