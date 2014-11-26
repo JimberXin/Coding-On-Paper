@@ -6,69 +6,69 @@
 #include<algorithm>
 using namespace std;
 
-//*******************************Permutations*****************************************
+//******************Permutations**********************************
 //Given a collection of numbers, return all possible permutations.
 //For example,
 //[1,2,3] have the following permutations:
 //[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1].
 class Permutations {
 public:
-	bool isVisited[200];
-	void DFS(vector<vector<int> >&result,  vector<int> &temp, vector<int> &num, int index){
-		if(temp.size() == num.size() ){
-			   result.push_back(temp);
-			   return;
-		   }
-		   for(size_t i=0; i < num.size(); i++){
-			      if( !isVisited[i]){
-					  temp.push_back(num[i]);
-					  isVisited[i] = true;    // mark the currrent num
-					  DFS(result, temp, num, i+1); //deep search
-					  isVisited[i] =  false;  // restore
-					  temp.pop_back();
-				  }
-		   }
-	}
+    bool isVisited[200];
+    void DFS(vector<vector<int> >&result,  vector<int> &temp, vector<int> &num, int index){
+         if(temp.size() == num.size() ){
+	   result.push_back(temp);
+	   return;
+	 }
+	 for(size_t i=0; i < num.size(); i++){
+	   if( !isVisited[i]){
+	     temp.push_back(num[i]);
+	     isVisited[i] = true;    // mark the currrent num
+	     DFS(result, temp, num, i+1); //deep search
+	     isVisited[i] =  false;  // restore
+	     temp.pop_back();
+	   }
+	 }
+    }
     vector<vector<int> > permute(vector<int> &num) {
            vector<vector<int> > all;
-		   vector<int> temp;
-		   memset(isVisited,false,sizeof(isVisited));
-		   DFS(all,temp,num,0);
-		   return all;     
+	   vector<int> temp;
+	   memset(isVisited,false,sizeof(isVisited));
+	   DFS(all,temp,num,0);
+	   return all;     
        }
 };
 
-//**********************************Permutations II**************************************
+//******************************Permutations II**************************************
 //Given a collection of numbers that might contain duplicates, return all possible unique permutations.
 //For example, [1,1,2] have the following unique permutations  [1,1,2], [1,2,1], and [2,1,1].
 class PermutationsII {
 public:
-	bool isVisted[200];
-	void DFS(vector<vector<int> >&result, vector<int> &temp,  vector<int> &num, int index){
-		  if(temp.size() == num.size()){
-			  result.push_back(temp);
-			  return;
-		  }
+    bool isVisted[200];
+    void DFS(vector<vector<int> >&result, vector<int> &temp,  vector<int> &num, int index){
+         if(temp.size() == num.size()){
+	   result.push_back(temp);
+	   return;
+	 }
 
-		  for(int i = 0; i < num.size(); ++i){
-			  if(! isVisted[i] ){
-				  if( i != 0 && num[i] == num[i-1] && !isVisted[i-1] )   // Important!
-					  continue;   
-				  temp.push_back(num[i]);
-				  isVisted[i] = true;   //marked the current num as visited
-				  DFS(result, temp, num, i+1);  //deep search
-				  isVisted[i] = false;  //restore
-				  temp.pop_back();
-			  }
-		  }
-	}
+	 for(int i = 0; i < num.size(); ++i){
+	   if(! isVisted[i] ){
+	     if( i != 0 && num[i] == num[i-1] && !isVisted[i-1] )   // Important!
+	       continue;   
+	     temp.push_back(num[i]);
+	     isVisted[i] = true;   //marked the current num as visited
+	     DFS(result, temp, num, i+1);  //deep search
+	     isVisted[i] = false;  //restore
+	     temp.pop_back();
+	   }
+	 }
+    }
     vector<vector<int> > permuteUnique(vector<int> &num) {
-		     vector<vector<int> > all;
-			 vector<int> temp;
-			 sort(num.begin(), num.end()); // different from permutation, must sort first
-             memset(isVisted, false, sizeof(isVisted));
-			 DFS(all, temp, num, 0);
-			 return all;
+          vector<vector<int> > all;
+	  vector<int> temp;
+	  sort(num.begin(), num.end()); // different from permutation, must sort first
+	  memset(isVisted, false, sizeof(isVisted));
+	  DFS(all, temp, num, 0);
+	  return all;
     }
 };
 
@@ -84,18 +84,18 @@ class NextPermutation{
 public:
 	//Using the STL algorithm 'next_permutation'
     void nextPermutation(vector<int> &num){
-		   int length = num.size();
-		   if(length == 0 || length == 1)  return;
-           int i = length -2;
-		   //******find the first pair that num[i] >= num[i+1]
-		    while( i>=0 && num[i] >= num[i+1] )   i--;
-			if(i>=0) { //not till the begin of the vector, find the first element bigger than num[i]
-				   int j = length -1;
-				   while(num[j] <= num[i])  j--;
-				   swap(num[i], num[j]);				  
-			  }
-			vector<int>::iterator begin = num.begin() + (i +1);
-			reverse( begin,  num.end());			     
+          int length = num.size();
+	  if(length == 0 || length == 1)  return;
+	  int i = length -2;
+	  //******find the first pair that num[i] >= num[i+1]
+	  while( i>=0 && num[i] >= num[i+1] )   i--;
+	  if(i>=0){ //not till the begin of the vector, find the first element bigger than num[i]
+	           int j = length -1;
+		   while(num[j] <= num[i])  j--;
+		   swap(num[i], num[j]);				  
+	  }
+	  vector<int>::iterator begin = num.begin() + (i +1);
+	  reverse( begin,  num.end());			     
     }
 };
 
@@ -110,25 +110,25 @@ class PermutationSequence {
 public:
     string getPermutation(int n, int k){
            string result;
-		   int F[10];
-		   bool isVisted[10];
-		   F[0] =1;
-		   for(int i =1; i < 10; i++)
-			   F[i] = F[i-1] * i;
-		   memset(isVisted, 0, sizeof(isVisted));
-		   -- k;
-		   for(int i = n-1; i >= 0; i--) {
-			      int temp = k/F[i];
-				  int j =1;
- 				  for( ; j < 10 ; j++){
-  					     if( isVisted[j] == 0) temp --;
- 						 if(temp < 0 )	 break;
-				  }
-				  result += '0' + j;
-				  k %= F[i];
-				  isVisted[j] = 1;
-		   }     
-		   return result;    
+	   int F[10];
+	   bool isVisted[10];
+	   F[0] =1;
+	   for(int i =1; i < 10; i++)
+	     F[i] = F[i-1] * i;
+	   memset(isVisted, 0, sizeof(isVisted));
+	   -- k;
+	   for(int i = n-1; i >= 0; i--) {
+	     int temp = k/F[i];
+	     int j =1;
+	     for( ; j < 10 ; j++){
+	       if( isVisted[j] == 0) temp --;
+	       if(temp < 0 )	 break;
+	     }
+	     result += '0' + j;
+	     k %= F[i];
+	     isVisted[j] = 1;
+	   }     
+	   return result;    
     }
 };
 
@@ -139,22 +139,22 @@ class Combinations {
 public:
 	//Num is the left number, max to k;  k == k,   max == n; 
 	void DFS( int Num, int k,  int max, int index, vector<int> temp, vector<vector<int> > &result){
-		    if(Num == 0){
-				result.push_back(temp);
-				return;
-			}
-			 for(size_t i=index; i <= max; i++){
-				 temp.push_back(i);
-				  DFS(Num-1, k, max,  i+1, temp,result);  
-				  temp.pop_back();   
-			 }
+	      if(Num == 0){
+		result.push_back(temp);
+		return;
+	      }
+	      for(size_t i=index; i <= max; i++){
+		temp.push_back(i);
+		DFS(Num-1, k, max,  i+1, temp,result);  
+		temp.pop_back();   
+	      }
 	}
-            vector<vector<int> > combinations(int n,  int k){
-            vector<vector<int> > final;
-			vector<int> tempResult;
-			DFS(k, k , n, 1,tempResult, final);
-			return final;      
-    }
+        vector<vector<int> > combinations(int n,  int k){
+	vector<vector<int> > final;
+	vector<int> tempResult;
+	DFS(k, k , n, 1,tempResult, final);
+	return final;      
+	}
 };
 
 //******************************Subsets**************************************
@@ -165,22 +165,22 @@ public:
 class Subsets {
 public:
      void DFS(vector<int> &S, int index, vector<int> temp, vector<vector<int> > &result){
-	      if(index == S.size()){
-			  result.push_back(temp);
-			  return;
-		  }
-		  DFS(S, index+1, temp, result);     //not include current element
-		  temp.push_back(S[index]);
-		  DFS(S, index+1, temp, result);     //include current element			
-	}
+       if(index == S.size()){
+	 result.push_back(temp);
+	 return;
+       }
+       DFS(S, index+1, temp, result);     //not include current element
+       temp.push_back(S[index]);
+       DFS(S, index+1, temp, result);     //include current element			
+     }
 
     vector<vector<int> > subsets(vector<int> &S) {
         sort(S.begin(), S.end());
-		int len = S.size();
-		vector<int> singleRes;
-		vector<vector<int> > res;
-		DFS(S, 0, singleRes, res);
-		return res;
+	int len = S.size();
+	vector<int> singleRes;
+	vector<vector<int> > res;
+	DFS(S, 0, singleRes, res);
+	return res;
     }
 };
 
@@ -192,21 +192,21 @@ public:
 class SubsetsII {
 public:
     void DFS(vector<int> &S, int index, vector<int>&temp, vector<vector<int> >& result){
-		  result.push_back(temp);
-		  for(int i = index;  i < S.size();  i++){
-			  if(i != index && S[i] == S[i-1]) continue;
-			  temp.push_back(S[i]);
-			  DFS(S, i+1, temp, result);
-			  temp.pop_back();
-	   }
+      result.push_back(temp);
+      for(int i = index;  i < S.size();  i++){
+	if(i != index && S[i] == S[i-1]) continue;
+	temp.push_back(S[i]);
+	DFS(S, i+1, temp, result);
+	temp.pop_back();
+      }
     }
 
     vector<vector<int> > subsetsWithDup(vector<int> &S) {
         sort(S.begin(),S.end());
-		vector<vector<int> > res;
-		vector<int> temp;
-		DFS(S,0,temp, res);
-		return res;
+	vector<vector<int> > res;
+	vector<int> temp;
+	DFS(S,0,temp, res);
+	return res;
     }
 };
 
@@ -222,26 +222,26 @@ public:
 // reference of mannual c++ pp.156-pp.157
 class CombinationSum {
 public:
-		void DFS(vector<int> nums, int gap, int current, vector<int> &temp, vector<vector<int> > &result){
-		//     find onde solution
-		if( gap == 0){ 
-			result.push_back(temp);
-			return;
-		}
-		for(size_t i=current;i<nums.size();i++){
-			    if(gap < nums[i])   return ;  // cut it down
-				temp.push_back(nums[i]);
-				DFS(nums,gap-nums[i],i,temp,result);
-				temp.pop_back();
-		}		   
-	}
+  void DFS(vector<int> nums, int gap, int current, vector<int> &temp, vector<vector<int> > &result){
+    //     find onde solution
+    if( gap == 0){ 
+      result.push_back(temp);
+      return;
+    }
+    for(size_t i=current;i<nums.size();i++){
+      if(gap < nums[i])   return ;  // cut it down
+      temp.push_back(nums[i]);
+      DFS(nums,gap-nums[i],i,temp,result);
+      temp.pop_back();
+    }		   
+  }
 
     vector<vector<int> > combinationSum(vector<int> &candidates, int target){
-		sort(candidates.begin(),candidates.end());
-          vector<vector<int> > result;
-		  vector<int> temp;
-		  DFS(candidates,target,0,temp,result);
-		  return result;     
+      sort(candidates.begin(),candidates.end());
+      vector<vector<int> > result;
+      vector<int> temp;
+      DFS(candidates,target,0,temp,result);
+      return result;     
     }
 };
 
@@ -258,26 +258,26 @@ class CombinationSum2 {
 public:
     vector<vector<int> > combinationSum2(vector<int> &num, int target) {
           sort(num.begin(),num.end());
-		  vector<vector<int> > result;
-		  vector<int> temp;
-		   DFS(num,target,0,temp,result);
-           return result;
+	  vector<vector<int> > result;
+	  vector<int> temp;
+	  DFS(num,target,0,temp,result);
+	  return result;
     }
-	void DFS(vector<int>&num, int gap, int current, vector<int>  &temp, vector<vector<int> > &result){
-		if(gap == 0){
-			 result.push_back (temp);
-			 return;
-		}
-		int last = -1;  // mark last time vist
-		for(size_t  i= current; i< num.size(); i++){
-				if(last == num[i])  continue;   //make sure that the value has not yet been visited
-			    if(gap < num[i] )  return;    //cut it down
-			    last = num[i];
-				temp.push_back(num[i]);
-				DFS(num,gap-num[i],i+1,temp,result);  //the current index becomes i+1, not i
-				temp.pop_back ();
-		}
-	}
+  void DFS(vector<int>&num, int gap, int current, vector<int>  &temp, vector<vector<int> > &result){
+       if(gap == 0){
+	 result.push_back (temp);
+	 return;
+       }
+       int last = -1;  // mark last time vist
+       for(size_t  i= current; i< num.size(); i++){
+	 if(last == num[i])  continue;   //make sure that the value has not yet been visited
+	 if(gap < num[i] )  return;    //cut it down
+	 last = num[i];
+	 temp.push_back(num[i]);
+	 DFS(num,gap-num[i],i+1,temp,result);  //the current index becomes i+1, not i
+	 temp.pop_back ();
+       }
+  }
 };
 
 //*****************************Gray Code***********************************
@@ -309,19 +309,19 @@ public:
 int main(void){
 	Permutations a;
 	PermutationsII p;
-     int arr[] = {1,1,1,4};
+        int arr[] = {1,1,1,4};
 	vector<int> num;
 	for(int i=0; i< sizeof(arr)/sizeof(int);i++)
-		num.push_back (arr[i]);
+	   num.push_back (arr[i]);
 	vector<vector<int> > result = a.permute(num);
 	vector<vector<int> >::iterator outside;
 	vector<int>::iterator inside;
 	for(outside=result.begin(); outside != result.end(); outside++){
-		  for(inside = outside -> begin(); inside != outside -> end(); inside++)
-			    cout << *inside << " " ;
-		  cout << endl;
+	      for(inside = outside -> begin(); inside != outside -> end(); inside++)
+		cout << *inside << " " ;
+	      cout << endl;
 	}
 
-	 getchar();
-	 return 0;
+	getchar();
+	return 0;
 }
