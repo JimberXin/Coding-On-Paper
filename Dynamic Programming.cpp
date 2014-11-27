@@ -16,31 +16,31 @@ using namespace std;
 //if s1[i]==s2[j],  obviously, dp[i][j] = dp[i-1][j-1] + 1
 //start1 and start2 means the start of common string in s1 and s2
 string LCString(string s1, string s2){
-	int n1 = s1.length();
-	int n2 = s2.length();
-	if(n1 == 0 || n2 == 0) return NULL;
-	const int MAX = 100;
-	int dp[MAX][MAX] = {0};
-	int max_len = 0;
-	int index = 0;
-	for(int i = 0; i < n1; ++i){
-		for(int j = 0; j < n2; ++j){
-			 if(s1[i] == s2[j]){
-				   if(i && j)
-					   dp[i][j]  = dp[i-1][j-1] + 1;
-				   else if(i ==0 || j == 0)
-					   dp[i][j] =1;
-				   if(dp[i][j] > max_len){
-					   max_len = dp[i][j];
-					   index = i + 1 - dp[i][j];
-				   }
-			 }
-		}
-	}
-  	 return s1.substr(index,max_len);
+    int n1 = s1.length();
+    int n2 = s2.length();
+    if(n1 == 0 || n2 == 0) return NULL;
+    const int MAX = 100;
+    int dp[MAX][MAX] = {0};
+    int max_len = 0;
+    int index = 0;
+    for(int i = 0; i < n1; ++i){
+       for(int j = 0; j < n2; ++j){
+	 if(s1[i] == s2[j]){
+	   if(i && j)
+	     dp[i][j]  = dp[i-1][j-1] + 1;
+	   else if(i ==0 || j == 0)
+	     dp[i][j] =1;
+	   if(dp[i][j] > max_len){
+	     max_len = dp[i][j];
+	     index = i + 1 - dp[i][j];
+	   }
+	 }
+       }
+    }
+    return s1.substr(index,max_len);
 }
 
-//*****Longest Common Sequence(LCS) problem****can be non-contiguous*****
+//****Longest Common Sequence(LCS) problem****can be non-contiguous*****
 //*********Solution**************
 //A bit different from the continous LCS, d is a two-dimension array
 //d[i][j] means the current max numbers of s1[0...i] and s2[0....j]
@@ -50,36 +50,36 @@ string LCString(string s1, string s2){
 //2) if Xm !=  Yn and Zk != Xm,  then Z is the LCS of X(m-1) and Y
 //3) if Xm !=  Yn  and Zk != Yn,  then Z is the LCS of X and Y(n-1)
 int LCSubsquence(string s1, string s2){
-	int n1 = s1.length();
-	int n2 = s2.length();
-	vector<vector<int> > d(n1+1, vector<int>(n2+1, 0));
-	for(int i = 1; i <= n1; ++i){
-		for(int j = 1;  j <= n2; ++j){
-			if(s1[i-1] == s2[j-1])
-				d[i][j] = d[i-1][j-1] +1;
-			else
-				d[i][j] = max(d[i][j-1], d[i-1][j]);
-		}
-	}
-	return d[n1][n2];
+    int n1 = s1.length();
+    int n2 = s2.length();
+    vector<vector<int> > d(n1+1, vector<int>(n2+1, 0));
+    for(int i = 1; i <= n1; ++i){
+      for(int j = 1;  j <= n2; ++j){
+	if(s1[i-1] == s2[j-1])
+	  d[i][j] = d[i-1][j-1] +1;
+	else
+	  d[i][j] = max(d[i][j-1], d[i-1][j]);
+      }
+    }
+    return d[n1][n2];
 }
 
-//***************Longest Increasing Subsequence*********************
-//***********Solution************
+//*********Longest Increasing Subsequence******************
+//*********Solution************
 //1) exhausion method: Time Complexity:  O(N^2)
 //DP:   dp[i] = max(1, dp[j]+1),  A[i] > A[j], 0<= j < i
 int LIS_basic(int A[], int n){
-	int *dp = new int[n];
-	int maxNum = 0;
-	for(int i =0; i < n; ++i){
-		dp[i] = 1;
-		for(int j = 0; j < i; ++j){
-			 if(A[i] > A[j] && dp[j]+1 > dp[i])
-				 dp[i] = dp[j] + 1;
-		   }
-	     maxNum = max(maxNum, dp[i]);
-      }
-	return maxNum;
+    int *dp = new int[n];
+    int maxNum = 0;
+    for(int i =0; i < n; ++i){
+       dp[i] = 1;
+       for(int j = 0; j < i; ++j){
+	 if(A[i] > A[j] && dp[j]+1 > dp[i])
+	   dp[i] = dp[j] + 1;
+       }
+       maxNum = max(maxNum, dp[i]);
+    }
+    return maxNum;
 }
 
 //2) better method using binary search: Time Complexity: O(NlogN)
@@ -87,35 +87,35 @@ int LIS_basic(int A[], int n){
 //for A[0,...,i], and B[0...,maxLen-1], if A[i] > B[maxLen-1], add A[i]  at the end of B[maxLen-1]
 //if A[i] < B[maxLen-1], since B[] is a sorted array, find the corrent pos to replace B[pos] with A[i]
 int binary_search(int A[], int start, int end, int key){
-	int left = start;
-	int right = end;
-	while(left <= right){
-		int mid = left + ((right-left) >>1);
-		if(A[mid] > key)
-			right = mid -1;
-		else if(A[mid] < key)
-			left = mid+1;
-		else 
-			return mid;  //return the position to replace the element here
-	}
-	   return left;  // if not find the key
+   int left = start;
+   int right = end;
+   while(left <= right){
+     int mid = left + ((right-left) >>1);
+     if(A[mid] > key)
+       right = mid -1;
+     else if(A[mid] < key)
+       left = mid+1;
+     else 
+       return mid;  //return the position to replace the element here
+   }
+   return left;  // if not find the key
 }
 
 int LIS_better(int A[], int n){
-	if(n==0) return 0;
-	int* B = new int[n];
-	B[0] = A[0];
-	int pos = 0;
-	int maxLen = 1;
-	for(int i =1; i < n; ++i){
-		if(A[i] > B[maxLen-1]){
-			 B[maxLen++] = A[i];   //add it at the end of B and update maxLen
-		}else{
-			pos = binary_search(B,0,n-1,A[i]);
-			B[pos] = A[i];  //notice:  replace B[pos], not insert!
-		}
-	}
-	return maxLen;
+    if(n==0) return 0;
+    int* B = new int[n];
+    B[0] = A[0];
+    int pos = 0;
+    int maxLen = 1;
+    for(int i =1; i < n; ++i){
+      if(A[i] > B[maxLen-1]){
+	B[maxLen++] = A[i];   //add it at the end of B and update maxLen
+      }else{
+	pos = binary_search(B,0,n-1,A[i]);
+	B[pos] = A[i];  //notice:  replace B[pos], not insert!
+      }
+    }
+    return maxLen;
 }
 
 //*******************Longest Decreasing Subsequence**************
@@ -123,48 +123,48 @@ int LIS_better(int A[], int n){
 //1) exhausion method: Time Complexity:  O(N^2)
 //DP:   dp[i] = max(1, dp[j]+1),  A[i] <  A[j], 0<= j < i
 int LDS_basic(int A[], int n){
-	if(n==0) return 0;
-	int *dp = new int[n];
-	int maxLen = 1;
-	for(int i = 0; i < n; ++i){
-		dp[i] = 1;
-		for(int j = 0; j < i; ++j){
-			if(A[j] > A[i] && dp[j] +1 > dp[i])
-			    dp[i] = dp[j] + 1;
-		}
-		maxLen = max(maxLen, dp[i]);
-	}
-	return maxLen;
+   if(n==0) return 0;
+   int *dp = new int[n];
+   int maxLen = 1;
+   for(int i = 0; i < n; ++i){
+     dp[i] = 1;
+     for(int j = 0; j < i; ++j){
+       if(A[j] > A[i] && dp[j] +1 > dp[i])
+	 dp[i] = dp[j] + 1;
+     }
+     maxLen = max(maxLen, dp[i]);
+   }
+   return maxLen;
 }
 //A[] is a sorted Decreasing array, different from common Increasing array
 int Binary_Search_Reverse(int A[], int low, int high, int key){
-	 int left = low, right = high;
-	 while(left <= right){
-		   int mid = left +( (right - left) >> 1);
-		   if(A[mid] > key)
-			   left = mid + 1;
-		   else if(A[mid] < key)
-			   right = mid - 1;
-		   else
-			   return mid;
-	    }
-	 return left;
+     int left = low, right = high;
+     while(left <= right){
+       int mid = left +( (right - left) >> 1);
+       if(A[mid] > key)
+	 left = mid + 1;
+       else if(A[mid] < key)
+	 right = mid - 1;
+       else
+	 return mid;
+     }
+     return left;
 }
 //same idea with  LIS_better
 int LDS_better(int A[], int n){
-	if(n==0) return 0;
-	int* B = new int[n];
-	int pos = 0;
-	int maxLen = 1;
-	for(int i = 0; i < n; ++i){
-		if(A[i] < B[maxLen -1]){
-			B[maxLen++] = A[i];
-		}else{
-			pos = Binary_Search_Reverse(B,0,n-1,A[i]);
-			B[pos] = A[i];
-		}
-	}
-	return maxLen;
+    if(n==0) return 0;
+    int* B = new int[n];
+    int pos = 0;
+    int maxLen = 1;
+    for(int i = 0; i < n; ++i){
+       if(A[i] < B[maxLen -1]){
+	 B[maxLen++] = A[i];
+       }else{
+	 pos = Binary_Search_Reverse(B,0,n-1,A[i]);
+	 B[pos] = A[i];
+       }
+    }
+    return maxLen;
 }
 
 //******************************Triangle**************************************
@@ -189,23 +189,23 @@ int LDS_better(int A[], int n){
 //so min(dp[j], dp[j-1]) = min(INT_MAX, dp[j-1]) = dp[j-1]
 // after each iteration of i, dp[j]  has one elements added.
 int mininumTriangle(vector<vector<int> > &triangle){
-	int n = triangle.size();  //lines
-	if(n==0)  return 0;
-	vector<int> dp(n,  INT_MAX);
-	dp[0] = triangle[0][0];
-	for(int i = 1; i < n; ++i){
-		 for(int j = i; j >=0; --j){
-			 if( j==0)
-				 dp[j] = dp[0] + triangle[i][0];  //deal with the first column
-			 else 
-			     dp[j] = min(dp[j], dp[j-1]) + triangle[i][j];
-		 }
-	}
-	int minSum = INT_MAX;
-	for(int j=0; j < n; ++j){
-		minSum = min(dp[j], minSum);
-	}
-	  return minSum;
+    int n = triangle.size();  //lines
+    if(n==0)  return 0;
+    vector<int> dp(n,  INT_MAX);
+    dp[0] = triangle[0][0];
+    for(int i = 1; i < n; ++i){
+       for(int j = i; j >=0; --j){
+	 if( j==0)
+	   dp[j] = dp[0] + triangle[i][0];  //deal with the first column
+	 else 
+	   dp[j] = min(dp[j], dp[j-1]) + triangle[i][j];
+       }
+    }
+    int minSum = INT_MAX;
+    for(int j=0; j < n; ++j){
+      minSum = min(dp[j], minSum);
+    }
+    return minSum;
 }
 
 //******************Maximum Continuous Subsequence Sum*************
@@ -218,8 +218,8 @@ int maxSubarraySum(int A[], int n){
 	dp[0] = A[0];
 	int maxSum = A[0];
 	for(int i = 1; i < n; ++i){
-		dp[i] = max(dp[i-1]+A[i], A[i]);
-		maxSum = max(dp[i], maxSum);
+	  dp[i] = max(dp[i-1]+A[i], A[i]);
+	  maxSum = max(dp[i], maxSum);
 	}
 	 return maxSum;
 }
@@ -229,44 +229,44 @@ int maxSubarraySum(int A[], int n){
 // Traversing i from 0 to n, the cur_len records: let i be the center of palindrome ,the maximum length,
 // left and right are the symmetric index of the center i
 string palindrome_basic(string s){
-	string result;
-	if( s.empty()) return result;
-	int n = s.length();
-	int index = 0;
-	int maxLen = 0; 
+   string result;
+   if( s.empty()) return result;
+   int n = s.length();
+   int index = 0;
+   int maxLen = 0; 
 
-	for(int i =0; i < n; ++i){
-		int cur_len = 1;
-		int left = i-1;
-		int right = i+1;
-		while( left >=0 && right <= n-1 && s[left] == s[right]){
-			  ++cur_len;
-			  --left;
-			  ++right;
-		   }
-		cur_len = right - left - 1;
-		if(cur_len > maxLen){
-			index = i;
-			maxLen = cur_len;
-		}
-	}
-	return s.substr(index - (maxLen-1)/2, maxLen);
+   for(int i =0; i < n; ++i){
+      int cur_len = 1;
+      int left = i-1;
+      int right = i+1;
+      while( left >=0 && right <= n-1 && s[left] == s[right]){
+	  ++cur_len;
+	  --left;
+	  ++right;
+      }
+      cur_len = right - left - 1;
+      if(cur_len > maxLen){
+	  index = i;
+	  maxLen = cur_len;
+      }
+   }
+   return s.substr(index - (maxLen-1)/2, maxLen);
 }
 //*********Better Solution*****************
 //manacher algorithm to solve palindrome problem
 //prePrecess deals with the odd and even case
 string palindromePreprocess(string s){
-	string result;
-	if(s.empty()) 
-		result = "^#";
-	else
-	     result = "#";
-		for(int i =0; i < s.length(); ++i){
-			result += "#";
-			result += s.substr(i,1);
-		}
-		result += "$";
-		return result;
+    string result;
+    if(s.empty()) 
+      result = "^#";
+    else
+      result = "#";
+    for(int i =0; i < s.length(); ++i){
+      result += "#";
+      result += s.substr(i,1);
+    }
+    result += "$";
+    return result;
 }
  //Using Manacher Algorithm
         //  ^ # b # a #  b # c # b # a  # b # c #  b # a # c  # c # b # a # $
@@ -281,31 +281,31 @@ string palindromePreprocess(string s){
 //current center is i= 8, P[i] = 7 means the longest palindrome str num of i is 7, and right = i+P[i] = 7+8=15
 string palindrome_better(string str)
 {
-	string newStr = palindromePreprocess(str);
-	int n = newStr.length();
-	int center = 1;
-	int right = 0;
-	int maxLen = 0;
-	int index = 0;
-	int* P =new int[n];
-	for(int i = 1; i < n; ++i){
-		int i_mirror = 2*center - i;
-		if( right > i)
-			 P[i] = min(right - i, P[i_mirror]);
-		else
-			 P[i] = 0;
-		while( newStr[i+P[i]+1] == newStr[i-P[i]-1] )
-			  P[i]++;
-		 if(i + P[i] > right){
-			right = i + P[i];
-			center = i;
-		 }
-		  if(maxLen < P[i]){
-			   index = i;
-			   maxLen = P[i];
-		    }
-	}
-     	return newStr.substr(index - (maxLen-1)/2, maxLen);
+   string newStr = palindromePreprocess(str);
+   int n = newStr.length();
+   int center = 1;
+   int right = 0;
+   int maxLen = 0;
+   int index = 0;
+   int* P =new int[n];
+   for(int i = 1; i < n; ++i){
+      int i_mirror = 2*center - i;
+      if( right > i)
+	 P[i] = min(right - i, P[i_mirror]);
+      else
+	 P[i] = 0;
+      while( newStr[i+P[i]+1] == newStr[i-P[i]-1] )
+	 P[i]++;
+      if(i + P[i] > right){
+	 right = i + P[i];
+	 center = i;
+      }
+      if(maxLen < P[i]){
+	 index = i;
+	 maxLen = P[i];
+      }
+   }
+   return newStr.substr(index - (maxLen-1)/2, maxLen);
 }
 
 //******************Maximal Rectangle******************************
@@ -331,29 +331,29 @@ int maximaliRectangle(vector<vector<char> > &matrix){
 //1) s1[i-1] == s3[i+j-1] and isPart[i-1][j] is true.     or
 //2) s2[j-1] == s3[i+j-1] and isPart[i][j-1] is true.
 bool isInterleavingString(string s1, string s2, string s3){
-	int n1 = s1.length(), n2 = s2.length(), n3 = s3.length();
-	if(n1+n2 != n3) return false;
-	if(n1==0) return !s2.compare(s3);
-	if(n2==0) return !s1.compare(s3);
-	vector<vector<bool> > isPart(n1+1, vector<bool>(n2+1,false));
-	isPart[0][0] = 1;
-	 for(int i = 0; i < n1; ++i){
-		 if(s1[i] == s3[i])
-			isPart[i+1][0] = true;
-		 else break;
-	 } 
-	 for(int j = 0; j < n2; ++j){
-		 if(s2[j] == s3[j])
-			isPart[0][j+1] = true;
-		 else break;
-	 }
+   int n1 = s1.length(), n2 = s2.length(), n3 = s3.length();
+   if(n1+n2 != n3) return false;
+   if(n1==0) return !s2.compare(s3);
+   if(n2==0) return !s1.compare(s3);
+   vector<vector<bool> > isPart(n1+1, vector<bool>(n2+1,false));
+   isPart[0][0] = 1;
+   for(int i = 0; i < n1; ++i){
+     if(s1[i] == s3[i])
+       isPart[i+1][0] = true;
+     else break;
+   } 
+   for(int j = 0; j < n2; ++j){
+     if(s2[j] == s3[j])
+       isPart[0][j+1] = true;
+     else break;
+   }
 
-	 for(int i = 1; i <= n1; ++i){
-		 for(int j = 1; j <= n2; ++j){
-			  isPart[i][j] = (s1[i-1]==s3[i+j-1] && isPart[i-1][j]) ||(s2[j-1]==s3[i+j-1]&& isPart[i][j-1]);
-		  }
-	 }
-       return isPart[n1][n2];
+   for(int i = 1; i <= n1; ++i){
+     for(int j = 1; j <= n2; ++j){
+       isPart[i][j] = (s1[i-1]==s3[i+j-1] && isPart[i-1][j]) ||(s2[j-1]==s3[i+j-1]&& isPart[i][j-1]);
+     }
+   }
+   return isPart[n1][n2];
 }
 
 //*************************************Scramble string***************************************
@@ -395,51 +395,51 @@ Given two strings s1 and s2 of the same length, determine if s2 is a scrambled s
 //F[i][j][1] && F[i+1][j+1][1]  ======> S1[i] == S2[j] && S1[i+1]==S2[j+1]£¨eg£º¡°AC¡± and  ¡°AC¡±£©£¬
  //F[i][j+1][1] && F[i+1][j][1]  ======> S1[i+1] == S2[j] && S1[i] == S2[j + 1] £¨eg£º ¡°AB¡± and ¡°BA¡±£©£¬
  bool isScramble(string s1, string s2) {
-         int n= s1.length();
-		 int n2 = s2.length();
-		if(n != n2) return false;
-		bool dp[100][100][100];
-		memset(dp,false,sizeof(bool)*100*100*100);
-		for(int k = 1; k <= n; ++k){
-			for(int i =0; i <= n-k; ++i){
-				for(int j = 0; j <= n-k; ++j){
-					 if(k ==1)
-						 dp[i][j][k] = s1[i]==s2[j];
-					 else
-						 for(int m = 1; m < k; ++m){
-							 if( (dp[i][j][m]&&dp[i+m][j+m][k-m]) || (dp[i][j+k-m][m]&&dp[i+m][j][k-m]) ){
-								 dp[i][j][k] = true;
-							     break;
-							 }//end if
-						 }//end m while
-				    } //end j while
-			} // end i while
-		}// end k while
-		return dp[0][0][n];
-    }
+    int n= s1.length();
+    int n2 = s2.length();
+    if(n != n2) return false;
+    bool dp[100][100][100];
+    memset(dp,false,sizeof(bool)*100*100*100);
+    for(int k = 1; k <= n; ++k){
+      for(int i =0; i <= n-k; ++i){
+	for(int j = 0; j <= n-k; ++j){
+	  if(k ==1)
+	    dp[i][j][k] = s1[i]==s2[j];
+	  else
+	    for(int m = 1; m < k; ++m){
+	      if( (dp[i][j][m]&&dp[i+m][j+m][k-m]) || (dp[i][j+k-m][m]&&dp[i+m][j][k-m]) ){
+		dp[i][j][k] = true;
+		break;
+	      }//end if
+	    }//end m while
+	} //end j while
+      } // end i while
+    }// end k while
+    return dp[0][0][n];
+ }
 
  //****************************Minimun Path Sum**************************************
  //Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right
-//	which minimizes the sum of all numbers along its path.
+//which minimizes the sum of all numbers along its path.
 //Note: You can only move either down or right at any point in time.
 //Using the DP:  f[i][j] = min( f[i-1][j], f[i][j-1]) + grid[i][j]
  //Notice: Initializition, when i =0  and j =0, there's only one way
  int minPathSum(vector<vector<int> > &grid){
-           int m = grid.size();
-		   int n = grid[0].size();
-		   vector<vector<int> > dp(m,vector<int>(n));
-		   int i, j;
-		   dp[0][0] = grid[0][0];
-		   for(i = 1; i < n; i++)
-			   dp[0][i] = dp[0][i-1] + grid[0][i];
-		   for(j = 1; j < m;  j++)
-			   dp[j][0] = dp[j-1][0] + grid[j][0];
+     int m = grid.size();
+     int n = grid[0].size();
+     vector<vector<int> > dp(m,vector<int>(n));
+     int i, j;
+     dp[0][0] = grid[0][0];
+     for(i = 1; i < n; i++)
+       dp[0][i] = dp[0][i-1] + grid[0][i];
+     for(j = 1; j < m;  j++)
+       dp[j][0] = dp[j-1][0] + grid[j][0];
 
-		   for(i = 1; i <  m;  i++)
-			     for( j = 1; j <  n;  j++)
-					 dp[i][j] = min( dp[i-1][j], dp[i][j-1]) + grid[i][j];
+     for(i = 1; i <  m;  i++)
+       for( j = 1; j <  n;  j++)
+	 dp[i][j] = min( dp[i-1][j], dp[i][j-1]) + grid[i][j];
         
-            return dp[m-1][n-1];
+     return dp[m-1][n-1];
     }
 
  //*********************************Edit Distance***************************************
@@ -454,26 +454,26 @@ Given two strings s1 and s2 of the same length, determine if s2 is a scrambled s
 // 2. d[i, 0] = i;
 // 3. d[i, j] = d[i-1, j - 1] if A[i] == B[j]
 // 4. d[i, j] = min(d[i-1, j - 1],    substitue
-//                          d[i, j - 1],         insert
-//                      	 d[i-1, j] ) + 1  if A[i] != B[j]   delete
+//                  d[i, j - 1],         insert
+//                 d[i-1, j] ) + 1  if A[i] != B[j]   delete
 
  int minEditDistance(string word1, string word2){
-	     int n1 = word1.length();
-		 int n2 = word2.length();
-		 vector<vector<int> > dp(n1+1, vector<int>(n2+1,0));
-		 for(int i =0 ; i <= n1;  ++i)
-			 dp[i][0] = i;
-		 for(int j=0; j <= n2; ++j)
-			 dp[0][j] = j;
-		 for(int i = 1; i <= n1; ++i){
-			  for(int j =1; j <= n2; ++j){
-				 if(word1[i-1] == word2[j-1])
-					 dp[i][j] = dp[i-1][j-1];
-				 else
-					 dp[i][j] = min( min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1] ) +1;
-			  }
-		 }
-		    return dp[n1][n2];
+     int n1 = word1.length();
+     int n2 = word2.length();
+     vector<vector<int> > dp(n1+1, vector<int>(n2+1,0));
+     for(int i =0 ; i <= n1;  ++i)
+        dp[i][0] = i;
+     for(int j=0; j <= n2; ++j)
+        dp[0][j] = j;
+     for(int i = 1; i <= n1; ++i){
+       for(int j =1; j <= n2; ++j){
+	 if(word1[i-1] == word2[j-1])
+	   dp[i][j] = dp[i-1][j-1];
+	 else
+	   dp[i][j] = min( min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1] ) +1;
+       }
+     }
+     return dp[n1][n2];
  }
 
 //****************Climbing Stairs**********************************
@@ -489,7 +489,7 @@ int climbStairs(int n){
 	 return d[n];
 }
  
- //*********************************Test******************************************
+ //*************************Test******************************************
 int main(void){
 	//******************LCS***********************
 	string s1 = "cbaa";
@@ -507,7 +507,7 @@ int main(void){
 
 	//***********Interleaving string*********************
 	string ss1= "aabcc";
-	//string ss2="dbbca";
+x	//string ss2="dbbca";
 	string ss2 ="";
 	string ss3="aadbbcbcac";
 	string ss4="aadbbbaccc";
