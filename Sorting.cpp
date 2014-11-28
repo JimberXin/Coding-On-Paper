@@ -47,9 +47,9 @@ void Insert_sort(int A[], int n){
 void Select_sort(int A[], int n){
    if(n==0) return;
    int i, j;
-   for(i=0; i < n; --i){
+   for(i=0; i < n; ++i){
      int min_num = i;
-     for(j = i+1; j < n; --j)
+     for(j = i+1; j < n; ++j)
        if(A[j] < A[min_num])
 	 min_num = j;
      if(min_num != i)

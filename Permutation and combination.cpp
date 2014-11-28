@@ -295,13 +295,13 @@ class GrayCode {
 public:
     vector<int> grayCode(int n) {
         vector<int> result ;
-	   int size = 1<< n;
-	   result.resize(size);
-	   for(int i = 0; i < size; i++){
-		   int temp = i ^ i >>1;
-		   result[i] = temp;
-	   }
-	   return result;
+	int size = 1<< n;
+	result.resize(size);
+	for(int i = 0; i < size; i++){
+	    int temp = i ^ i >>1;
+	    result[i] = temp;
+	}
+	return result;
     }
 };
 
