@@ -27,9 +27,9 @@ void BubbleSort(int A[], int n){
 	 swap(A[j], A[j-1]);
 	 exchange = true;
        }
+     }//end for j
        if(!exchange) return;
-     }
-   }
+   }//end for i
 }
 
 //**************Insertion Sort**************************
